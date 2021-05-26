@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "58597302424",
+    "project_id": "flipforte-dcc2b",
+    "storage_bucket": "flipforte-dcc2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58597302424:android:825db7db024968a16730ed",
+        "android_client_info": {
+          "package_name": "com.muhammadasmar.flipforte"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58597302424-76o35con2igrnn22kgaa7us4b8kineuh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muhammadasmar.flipforte",
+            "certificate_hash": "1cd5f1a69bb0853c81ab5625cc21bdf98f0ae539"
+          }
+        },
+        {
+          "client_id": "58597302424-bsjdvom7va0ph5417t9bh0vn9i8inko3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqZdDPkVOXQdesgmQ8cSz5aVol6mn1gEk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58597302424-bsjdvom7va0ph5417t9bh0vn9i8inko3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
