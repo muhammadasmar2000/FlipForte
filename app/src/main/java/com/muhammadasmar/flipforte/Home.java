@@ -14,6 +14,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Home extends AppCompatActivity {
+    private static final String TAG = "Home.java";
     private MaterialButton signOutButton;
     private int startingPosition;
     @Override

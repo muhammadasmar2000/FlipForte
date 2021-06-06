@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
     //declare variables
+    private static final String TAG = "MainActivity.java";
     private TextInputEditText email_input, password_input;
     private TextInputLayout email_layout, password_layout;
     private MaterialButton login_button, register_button;

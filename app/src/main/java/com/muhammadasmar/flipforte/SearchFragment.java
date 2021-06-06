@@ -21,6 +21,7 @@ public class SearchFragment extends Fragment {
     //declare views
     AutoCompleteTextView autoCompleteTextView;
     PDFView pdfView;
+    private static final String TAG = "SearchFragment";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class SearchFragment extends Fragment {
         pdfView.useBestQuality(true);
 
         //set up dropdown menu
-        String[] menuOptions = {"Mendelsohhn's Concerto"};
+        String[] menuOptions = {"Mendelsohn's Concerto"};
         ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), R.layout.list_item, menuOptions);
         //autoCompleteTextView.setText(arrayAdapter.getItem(0).toString(), false);
         autoCompleteTextView.setAdapter(arrayAdapter);
@@ -48,7 +49,7 @@ public class SearchFragment extends Fragment {
                 //leave empty
                 //change pdf when autocomplete text view text is changed
                 String pdf = autoCompleteTextView.getText().toString() + ".pdf";
-                Log.d("PDF Name", pdf);
+                Log.d(TAG, "PDF Name: " + pdf);
                 pdfView.fromAsset(pdf)
                         .enableSwipe(true) // allows to block changing pages using swipe
                         .swipeHorizontal(false)
