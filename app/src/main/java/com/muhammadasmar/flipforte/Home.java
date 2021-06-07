@@ -17,6 +17,7 @@ public class Home extends AppCompatActivity {
     private static final String TAG = "Home.java";
     private MaterialButton signOutButton;
     private int startingPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +30,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent (Home.this, MainActivity.class));
+                startActivity(new Intent(Home.this, MainActivity.class));
                 finish();
             }
         });
@@ -43,7 +44,7 @@ public class Home extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment = null;
             int newPosition = 0;
-            switch(item.getItemId()) {
+            switch (item.getItemId()) {
                 case R.id.search:
                     fragment = new SearchFragment();
                     newPosition = 1;
@@ -67,17 +68,17 @@ public class Home extends AppCompatActivity {
 
     private Boolean loadFragment(Fragment fragment, int newPosition) {
         if (fragment != null) {
-            if(newPosition == 0) {
+            if (newPosition == 0) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             }
-            if(startingPosition > newPosition) {
+            if (startingPosition > newPosition) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .setCustomAnimations(R.anim.from_left, R.anim.to_right)
                         .replace(R.id.fragment_container, fragment).commit();
 
             }
-            if(startingPosition < newPosition) {
+            if (startingPosition < newPosition) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .setCustomAnimations(R.anim.from_right, R.anim.to_left)

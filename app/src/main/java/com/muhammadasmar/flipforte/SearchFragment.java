@@ -22,6 +22,7 @@ public class SearchFragment extends Fragment {
     AutoCompleteTextView autoCompleteTextView;
     PDFView pdfView;
     private static final String TAG = "SearchFragment";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class SearchFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //leave empty
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //leave empty
@@ -77,6 +79,7 @@ public class SearchFragment extends Fragment {
                         .load();
 
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 //leave empty

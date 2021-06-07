@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
     //declare variables
     private static final String TAG = "MainActivity.java";
+    private MaterialTextView header;
     private TextInputEditText email_input, password_input;
     private TextInputLayout email_layout, password_layout;
     private MaterialButton login_button, register_button;
@@ -39,23 +43,46 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private LinearLayout mainLayout;
     int RC_SIGN_IN = 0;
+    private Animation input_animation, button_animation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initializeViews();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
 
+    private void initializeViews() {
         //initialize variables
         mainLayout = findViewById(R.id.mainLayout);
-        email_input = (TextInputEditText)findViewById(R.id.email);
-        password_input = (TextInputEditText)findViewById(R.id.password);
-        email_layout = (TextInputLayout)findViewById(R.id.email_layout);
-        password_layout = (TextInputLayout)findViewById(R.id.password_layout);
-        login_button = (MaterialButton)findViewById(R.id.loginButton);
-        register_button = (MaterialButton)findViewById(R.id.registerButton);
-        progressBar = (CircularProgressIndicator)findViewById(R.id.progressBar);
+        header = findViewById(R.id.header);
+        email_input = (TextInputEditText) findViewById(R.id.email);
+        password_input = (TextInputEditText) findViewById(R.id.password);
+        email_layout = (TextInputLayout) findViewById(R.id.email_layout);
+        password_layout = (TextInputLayout) findViewById(R.id.password_layout);
+        login_button = (MaterialButton) findViewById(R.id.loginButton);
+        register_button = (MaterialButton) findViewById(R.id.registerButton);
+        progressBar = (CircularProgressIndicator) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
         mAuth = FirebaseAuth.getInstance();
-        signin = (SignInButton)findViewById(R.id.sign_in_button);
+
+        //find animation files
+        input_animation = AnimationUtils.loadAnimation(this, R.anim.input_field_animation);
+        button_animation = AnimationUtils.loadAnimation(this, R.anim.button_animation);
+
+        //start animation
+        header.startAnimation(input_animation);
+        email_layout.startAnimation(input_animation);
+        password_layout.startAnimation(input_animation);
+        login_button.startAnimation(button_animation);
+        register_button.startAnimation(button_animation);
+
+        //Google Sign in button
+        signin = (SignInButton) findViewById(R.id.sign_in_button);
         signin.setSize(SignInButton.SIZE_WIDE);
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,10 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     @Override
@@ -78,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in and if so, go to home screen
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if (currentUser != null) {
             Intent intent = new Intent(MainActivity.this, Home.class);
             startActivity(intent);
             finish();
@@ -106,20 +129,20 @@ public class MainActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     //create Snackbar for successful account registration
                     Snackbar.make(mainLayout, "Account registration successful", Snackbar.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, Home.class);
                     startActivity(intent);
                     //finish();
-                }
-                else {
+                } else {
                     Snackbar.make(mainLayout, "Account registration failed", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
         progressBar.setVisibility(View.INVISIBLE);
     }
+
     //login the user by validating account in firebase
     public void login(View view) {
         progressBar.setVisibility(View.VISIBLE);
@@ -130,13 +153,12 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     //create Snackbar for successful account registration
                     Snackbar.make(mainLayout, "Login successful", Snackbar.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, Home.class);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     Snackbar.make(mainLayout, "Login failed", Snackbar.LENGTH_SHORT).show();
                 }
             }
