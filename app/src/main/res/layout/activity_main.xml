@@ -17,7 +17,7 @@
         android:layout_marginTop="50dp"
         android:fontFamily="@font/source_sans_pro"
         android:text="FlipForte App"
-        android:textColor="@color/black"
+        android:textColor="#FFF9E3"
         android:textSize="50sp"
         android:textStyle="bold" />
 
@@ -26,9 +26,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="#fff"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="50dp"
+        app:boxStrokeColor="#FFF9E3"
+        app:hintTextColor="#FFF9E3"
+        app:hintEnabled="true"
         android:hint="Email"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
@@ -41,6 +45,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#000"
             android:fontFamily="@font/source_sans_pro" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,9 +54,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="#fff"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="50dp"
+        app:boxStrokeColor="#FFF9E3"
+        app:hintTextColor="#FFF9E3"
+        app:hintEnabled="true"
         android:hint="Password"
         app:endIconMode="password_toggle"
         app:helperText="Required*"
@@ -62,6 +71,7 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#000"
             android:fontFamily="@font/source_sans_pro"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -83,6 +93,8 @@
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#fff9e3"
+            android:textColor="#000"
             android:onClick="login"
             android:text="Login"
             android:textAllCaps="false" />
@@ -96,6 +108,8 @@
             android:id="@+id/registerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#fff9e3"
+            android:textColor="#000"
             android:onClick="register"
             android:text="Register"
             android:textAllCaps="false" />

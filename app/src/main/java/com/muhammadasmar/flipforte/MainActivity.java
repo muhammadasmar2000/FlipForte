@@ -112,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
     public void register(View view) {
         String email = email_input.getText().toString().trim();
         String password = password_input.getText().toString().trim();
+        email_layout.setError(null);
+        password_layout.setError(null);
         //check for valid email
         if (!isValidEmail(email)) {
             email_layout.setError("Invalid email address");
