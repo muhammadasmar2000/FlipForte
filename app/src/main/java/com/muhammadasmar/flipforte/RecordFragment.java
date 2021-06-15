@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.io.File;
 import java.io.IOException;
 
 public class RecordFragment extends Fragment {
@@ -23,58 +24,54 @@ public class RecordFragment extends Fragment {
     private MaterialButton recordButton, stopButton;
     private MaterialTextView recordingStatus;
     private MediaRecorder mediaRecorder;
-    private String filename = null;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.record, container, false);
-        initializeViews(view);
-        return view;
-    }
-
-    private void initializeViews(View view) {
         recordButton = (MaterialButton) view.findViewById(R.id.recordButton);
         stopButton = (MaterialButton) view.findViewById(R.id.stopButton);
-        recordingStatus = (MaterialTextView) view.findViewById(R.id.recording_status);
+        recordingStatus = (MaterialTextView) view.findViewById(R.id.recordingStatus);
 
-        filename = Environment.getExternalStorageDirectory().getAbsolutePath();
-        filename += "/recorded_audio.mp3";
+        mediaRecorder = new MediaRecorder();
 
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startRecording();
-                recordingStatus.setText("Now Recording...");
+                try {
+                    //configure audio recorder
+                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+                    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+
+                    //create new file for audio
+                    File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    File file = new File(path, "/record.3gp");
+                    mediaRecorder.setOutputFile(file);
+                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                    mediaRecorder.prepare();
+
+                    //start the recording
+                    mediaRecorder.start();
+                    recordingStatus.setText("Recording has started...");
+
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
+
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopRecording();
+                mediaRecorder.stop();
+                mediaRecorder.reset();
+                mediaRecorder.release();
+                mediaRecorder = null;
                 recordingStatus.setText("Recording has stopped...");
             }
         });
-    }
 
-    private void startRecording(){
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        mediaRecorder.setOutputFile(filename);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        try {
-            mediaRecorder.prepare();
-        }
-        catch (IOException e) {
-            Log.d(TAG, "prepare() failed");
-        }
-        mediaRecorder.start();
-    }
-
-    private void stopRecording() {
-        mediaRecorder.stop();
-        mediaRecorder.release();
-        mediaRecorder = null;
+        return view;
     }
 }

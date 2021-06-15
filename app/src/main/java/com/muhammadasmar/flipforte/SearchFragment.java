@@ -21,7 +21,7 @@ public class SearchFragment extends Fragment {
     //declare views
     AutoCompleteTextView autoCompleteTextView;
     PDFView pdfView;
-    private static final String TAG = "SearchFragment";
+    static final String TAG = "SearchFragment";
 
     @Nullable
     @Override
@@ -87,5 +87,4 @@ public class SearchFragment extends Fragment {
         });
         return view;
     }
-
 }
