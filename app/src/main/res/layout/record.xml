@@ -6,26 +6,30 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/materialTextView3"
+        android:id="@+id/recordHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:text="Press the buttons below to record"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="32sp"
+        app:layout_constraintBottom_toTopOf="@+id/record_image"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <ImageView
         android:id="@+id/record_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/recordButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialTextView3"
+        app:layout_constraintTop_toBottomOf="@+id/recordHeader"
         app:srcCompat="@drawable/ic_record_icon" />
 
     <com.google.android.material.button.MaterialButton
@@ -35,6 +39,7 @@
         android:layout_marginTop="32dp"
         android:text="Record"
         android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/recordingStatus"
         app:layout_constraintEnd_toStartOf="@+id/stopButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -59,11 +64,13 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="40dp"
+        android:contentDescription="Recording Icon"
         android:textColor="@android:color/holo_red_light"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recordButton"
-        android:contentDescription="Recording Icon"/>
+        app:layout_constraintTop_toBottomOf="@+id/recordButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,37 +38,16 @@ public class RecordFragment extends Fragment {
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    //configure audio recorder
-                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-                    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-
-                    //create new file for audio
-                    File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                    File file = new File(path, "/record.3gp");
-                    mediaRecorder.setOutputFile(file);
-                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                    mediaRecorder.prepare();
-
-                    //start the recording
-                    mediaRecorder.start();
-                    recordingStatus.setText("Recording has started...");
-
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
+                ((Home)getActivity()).startRecording();
+                recordingStatus.setText("Recording has started...");
             }
         });
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaRecorder.stop();
-                mediaRecorder.reset();
-                mediaRecorder.release();
-                mediaRecorder = null;
-                recordingStatus.setText("Recording has stopped...");
+                ((Home)getActivity()).stopRecording();
+                recordingStatus.setText("Recording has been downloaded...");
             }
         });
 
