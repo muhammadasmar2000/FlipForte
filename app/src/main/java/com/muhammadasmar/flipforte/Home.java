@@ -1,18 +1,15 @@
 package com.muhammadasmar.flipforte;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,12 +17,14 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Home extends AppCompatActivity {
     private static final String TAG = "Home.java";
     private MaterialButton signOutButton;
     private int startingPosition;
-    private MediaRecorder mediaRecorder;
+    MediaRecorder recorder;
+    File downloadsPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,59 +42,60 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        mediaRecorder = new MediaRecorder();
-        int PERMISSION_ALL = 1;
-        String[] PERMISSIONS = {
-                Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
-
-        if (!hasPermissions(this, PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-        }
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment()).commit();
-    }
 
-    public static boolean hasPermissions (Context context, String[] permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
+        //configure audio recorder
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        Log.d(TAG, "Debug: Audio configured");
+
+        //create new file for audio
+        downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(downloadsPath, "/record.3gp");
+        if (file.delete()) {
+            Log.d(TAG, "Debug: File: " + file.getAbsolutePath() + " has been deleted");
         }
-        return true;
+        recorder.setOutputFile(file);
+        Log.d(TAG, "Debug: Output File path: " + file);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        Log.d(TAG, "Debug: Output file created");
     }
 
     public void startRecording() {
         try {
-            //configure audio recorder
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-
-            //create new file for audio
-            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            File file = new File(path, "/record.3gp");
-            mediaRecorder.setOutputFile(file);
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            mediaRecorder.prepare();
+            //prepare the recording
+            recorder.prepare();
+            Log.d(TAG, "Debug: Media recorder prepared");
 
             //start the recording
-            mediaRecorder.start();
+            recorder.start();
+            Log.d(TAG, "Debug: Recording started");
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (IOException ioe) {
+            ioe.printStackTrace();
+            Log.d(TAG, "Debug: Media recorder prepare() failed by IOException");
+            System.out.println("" + ioe);
+        }
+        catch (IllegalStateException ise) {
+            ise.printStackTrace();
+            Log.d(TAG, "Debug: Media recorder prepare() failed by IllegalStateException");
+            System.out.println("" + ise);
         }
     }
 
     public void stopRecording() {
-        mediaRecorder.stop();
-        //mediaRecorder.reset();
-        mediaRecorder.release();
-        mediaRecorder = null;
+        if (recorder != null) {
+            Log.d(TAG, "Debug: About to stop recording");
+            recorder.stop();
+            Log.d(TAG, "Debug: Recording stopped");
+            //recorder.reset();
+            recorder.release();
+            recorder = null;
+        }
+        Log.d(TAG, "Debug: Recorder has been set to null");
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
