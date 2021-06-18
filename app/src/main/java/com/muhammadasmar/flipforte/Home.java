@@ -18,13 +18,16 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class Home extends AppCompatActivity {
     private static final String TAG = "Home.java";
     private MaterialButton signOutButton;
     private int startingPosition;
     MediaRecorder recorder;
-    File downloadsPath;
+    String file;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,15 +52,17 @@ public class Home extends AppCompatActivity {
         //configure audio recorder
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
         Log.d(TAG, "Debug: Audio configured");
 
+        //get current time and format it
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
+        String formattedDate = myDateObj.format(myFormatObj).trim();
+        Log.d(TAG, "Debug: Current time: " + formattedDate);
         //create new file for audio
-        downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File file = new File(downloadsPath, "/record.3gp");
-        if (file.delete()) {
-            Log.d(TAG, "Debug: File: " + file.getAbsolutePath() + " has been deleted");
-        }
+        file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + formattedDate + ".mp3";
+        Log.d(TAG, "Debug: File Name: " + file);
         recorder.setOutputFile(file);
         Log.d(TAG, "Debug: Output File path: " + file);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
