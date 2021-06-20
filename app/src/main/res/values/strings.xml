@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Flip Forte</string>
+    <string-array name="pdf_list">
+        <item>PDF 1</item>
+        <item>PDF 2</item>
+        <item>PDF 3</item>
+    </string-array>
+
+    <string-array name="composer_list">
+        <item>This is a random description</item>
+        <item>This is a random description</item>
+        <item>This is a random description</item>
+    </string-array>
 </resources>
