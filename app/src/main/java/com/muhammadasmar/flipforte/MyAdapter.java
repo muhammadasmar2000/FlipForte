@@ -9,15 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    String pdfNames[], composers[];
+    ArrayList<String> pdfNames, uploaded;
     Context context;
-    public MyAdapter(Context context, String pdfNames[], String composers[]) {
+    public MyAdapter(Context context, ArrayList<String> pdfNames, ArrayList<String> uploaded) {
         this.context = context;
         this.pdfNames = pdfNames;
-        this.composers = composers;
+        this.uploaded = uploaded;
     }
-
 
     @NonNull
     @Override
@@ -29,21 +30,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
-        holder.title.setText(pdfNames[position]);
-        holder.composer.setText(composers[position]);
+        holder.title.setText(pdfNames.get(position));
+        holder.upload.setText(uploaded.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return pdfNames.length;
+        //number of rows
+        return pdfNames.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView title, composer;
+        TextView title, upload;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.pdf_title);
-            composer = itemView.findViewById(R.id.pdf_composer);
+            upload = itemView.findViewById(R.id.pdf_upload);
         }
     }
 }

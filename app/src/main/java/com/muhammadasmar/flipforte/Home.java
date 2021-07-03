@@ -12,9 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,12 +29,15 @@ public class Home extends AppCompatActivity {
     private static final String TAG = "Home.java";
     private MaterialButton signOutButton;
     private int startingPosition;
-    MediaRecorder recorder;
-    String file;
+    private MediaRecorder recorder;
+    private String file, url;
+    public String userID;
+    public FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         if (savedInstanceState == null) {
             loadFragment(new SearchFragment(), 0);
         }
@@ -49,6 +55,12 @@ public class Home extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment()).commit();
 
+        //get signed in google firebase user and userID
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userID = user.getUid();
+    }
+
+    public void startRecording() {
         //configure audio recorder
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -67,9 +79,6 @@ public class Home extends AppCompatActivity {
         Log.d(TAG, "Debug: Output File path: " + file);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         Log.d(TAG, "Debug: Output file created");
-    }
-
-    public void startRecording() {
         try {
             //prepare the recording
             recorder.prepare();
