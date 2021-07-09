@@ -27,7 +27,8 @@ import java.util.ArrayList;
 
 public class LibraryFragment extends Fragment {
     RecyclerView recyclerView;
-    ArrayList<String> pdfName, uploaded;
+    ArrayList<String> pdfName;
+    ArrayList<String> uploaded;
     RequestQueue queue;
     String url, userID;
     private static final String TAG = "LibraryFragment";
@@ -36,17 +37,11 @@ public class LibraryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.library, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         pdfName = new ArrayList<String>();
         uploaded = new ArrayList<String>();
+        HttpsTrustManager.allowAllSSL();
+        queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         getPDFList();
-        //pdfName = getResources().getStringArray(R.array.pdf_list);
-        //composer = getResources().getStringArray(R.array.composer_list);
-
-
-        MyAdapter myAdapter = new MyAdapter(getActivity(), pdfName, uploaded);
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
@@ -55,7 +50,6 @@ public class LibraryFragment extends Fragment {
         userID = ((Home)getActivity()).userID;
         Log.d(TAG, "Debug: Google User ID: " + userID);
         url = "https://www.flipforte.net/api/get-files.php?identifier=" + userID;
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -64,13 +58,12 @@ public class LibraryFragment extends Fragment {
                     JSONArray filesJsonArray = response.getJSONArray("files");
                     for(int i = 0; i < filesJsonArray.length(); i++) {
                         JSONObject file = filesJsonArray.getJSONObject(i);
-
-                        String pdf_name = file.getString("name");
-                        String upload_date = file.getString("desc");
-
-                        pdfName.add(pdf_name);
-                        uploaded.add(upload_date);
+                        pdfName.add(file.getString("name"));
+                        uploaded.add(file.getString("desc"));
                     }
+                    MyAdapter myAdapter = new MyAdapter(getActivity(), pdfName, uploaded);
+                    recyclerView.setAdapter(myAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
