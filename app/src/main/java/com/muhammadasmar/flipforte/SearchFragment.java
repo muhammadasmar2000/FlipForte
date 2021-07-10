@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
@@ -41,7 +43,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class SearchFragment extends Fragment {
     //declare views
     private AutoCompleteTextView autoCompleteTextView;
-    private PDFView pdfView;
+    private WebView webview;
     private RequestQueue queue;
     private ArrayList<String> menuOptions;
     private ArrayLists arrayLists;
@@ -55,8 +57,10 @@ public class SearchFragment extends Fragment {
 
         //initialize views
         autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteText);
-        pdfView = (PDFView) view.findViewById(R.id.pdfView);
-        pdfView.useBestQuality(true);
+        webview = (WebView) view.findViewById(R.id.webview);
+        webview.setWebViewClient(new WebViewClient());
+        webview.getSettings().setSupportZoom(true);
+        webview.getSettings().setJavaScriptEnabled(true);
         HttpsTrustManager.allowAllSSL();
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         menuOptions = new ArrayList<>();
@@ -93,24 +97,15 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //int position = autoCompleteTextView.getListSelection;
-                //arrayLists.location.get(position);
                 //change pdf when autocomplete text view text is changed
-                String pdf = autoCompleteTextView.getText().toString() + ".pdf";
-                Log.d(TAG, "PDF Name: " + pdf);
-                pdfView.fromAsset(pdf)
-                        .enableSwipe(true) // allows to block changing pages using swipe
-                        .swipeHorizontal(false)
-                        .enableDoubletap(true)
-                        .defaultPage(0)
-                        .enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
-                        .password(null)
-                        .scrollHandle(null)
-                        .enableAntialiasing(true) // improve rendering a little bit on low-res screens
-                        // spacing between pages in dp. To define spacing color, set view background
-                        .spacing(0)
-                        .invalidPageColor(Color.WHITE) // color of page that is invalid and cannot be loaded
-                        .load();
+                int position = 0;
+                for (int i = 0; i < menuOptions.size(); i++) {
+                    if(menuOptions.get(i).equals(autoCompleteTextView.getText().toString()) ) {
+                        position = i;
+                    }
+                }
+                String pdf_url = arrayLists.location.get(position);
+                webview.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdf_url);
             }
 
             @Override
