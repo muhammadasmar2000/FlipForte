@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class ArrayLists {
     public ArrayList<String> pdfName;
     public ArrayList<String> uploaded;
-    public ArrayList<String> location;
+    public ArrayList<String> resource;
 
     public ArrayLists() {
         this.pdfName = new ArrayList<>();
         this.uploaded = new ArrayList<>();
-        this.location = new ArrayList<>();
+        this.resource = new ArrayList<>();
     }
 
     public ArrayLists(ArrayList<String> pdfName, ArrayList<String> uploaded, ArrayList<String> location) {
         this.pdfName = pdfName;
         this.uploaded = uploaded;
-        this.location = location;
+        this.resource = location;
     }
 
     public ArrayList<String> getPdfName() {
@@ -35,11 +35,11 @@ public class ArrayLists {
         this.uploaded = uploaded;
     }
 
-    public ArrayList<String> getLocation() {
-        return location;
+    public ArrayList<String> getResource() {
+        return resource;
     }
 
-    public void setLocation(ArrayList<String> location) {
-        this.location = location;
+    public void setLocation(ArrayList<String> resource) {
+        this.resource = resource;
     }
 }

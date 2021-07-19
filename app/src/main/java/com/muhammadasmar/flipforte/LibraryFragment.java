@@ -39,7 +39,7 @@ public class LibraryFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         pdfName = new ArrayList<String>();
         uploaded = new ArrayList<String>();
-        HttpsTrustManager.allowAllSSL();
+        //HttpsTrustManager.allowAllSSL();
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         getPDFList();
 

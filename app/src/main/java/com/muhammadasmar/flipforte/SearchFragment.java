@@ -1,8 +1,5 @@
 package com.muhammadasmar.flipforte;
 
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,17 +22,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.barteksc.pdfviewer.PDFView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -61,7 +52,7 @@ public class SearchFragment extends Fragment {
         webview.setWebViewClient(new WebViewClient());
         webview.getSettings().setSupportZoom(true);
         webview.getSettings().setJavaScriptEnabled(true);
-        HttpsTrustManager.allowAllSSL();
+        //HttpsTrustManager.allowAllSSL();
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         menuOptions = new ArrayList<>();
         arrayLists = new ArrayLists();
@@ -104,8 +95,9 @@ public class SearchFragment extends Fragment {
                         position = i;
                     }
                 }
-                String pdf_url = arrayLists.location.get(position);
-                webview.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdf_url);
+                //https://www.flipforte.net/pdfreader/viewer.html?resource=tLntPfrq1yfb9MvhqNIn-3SQiQRQ59bSQhwKfp0Xj&identifier=testuser
+                String pdf_url = arrayLists.resource.get(position);
+                webview.loadUrl("https://www.flipforte.net/pdfreader/viewer.html?resource=" + pdf_url + "&identifier=" + userID);
             }
 
             @Override
@@ -125,24 +117,11 @@ public class SearchFragment extends Fragment {
                 Log.d(TAG, "parseJson: file name: " + file.getString("name"));
 
                 arrayLists.pdfName.add(file.getString("name"));
-                arrayLists.location.add(file.getString("location"));
-                Log.d(TAG, "parseJson: location: " + file.getString("location"));
+                arrayLists.resource.add(file.getString("resource"));
+                Log.d(TAG, "parseJson: resource: " + file.getString("resource"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 }
-
-/*
-.enableSwipe(true) // allows to block changing pages using swipe
-.swipeHorizontal(false)
-.enableDoubletap(true)
-.defaultPage(0)
-.enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
-.password(null)
-.scrollHandle(null)
-.enableAntialiasing(true) // improve rendering a little bit on low-res screens
-.spacing(0) // spacing between pages in dp. To define spacing color, set view background
-.invalidPageColor(Color.WHITE) // color of page that is invalid and cannot be loaded
- */
