@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     //create Snackbar for successful account registration
-                    Snackbar.make(mainLayout, "Account registration successful", Snackbar.LENGTH_SHORT).show();
+                    //Snackbar.make(mainLayout, "Account registration successful", Snackbar.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, Home.class);
                     startActivity(intent);
                     //finish();
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     //create Snackbar for successful account registration
-                    Snackbar.make(mainLayout, "Login successful", Snackbar.LENGTH_SHORT).show();
+                    //Snackbar.make(mainLayout, "Login successful", Snackbar.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, Home.class);
                     startActivity(intent);
                 } else {
@@ -222,7 +222,8 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d(TAG, "signInWithCredential:failure", task.getException());
-                            Snackbar.make(mainLayout, "Login failed", Snackbar.LENGTH_SHORT).show();                        }
+                            Snackbar.make(mainLayout, "Login failed", Snackbar.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }

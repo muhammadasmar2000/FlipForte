@@ -16,7 +16,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         android:fontFamily="@font/source_sans_pro"
-        android:text="FlipForte App"
+        android:text="FlipForte"
         android:textColor="#FFF9E3"
         android:textSize="50sp"
         android:textStyle="bold" />
