@@ -14,7 +14,7 @@
         android:title="Library"
         android:icon="@drawable/ic_library"/>
     <item
-        android:id="@+id/edit"
-        android:title="Edit"
-        android:icon="@drawable/ic_edit"/>
+        android:id="@+id/upload_menu"
+        android:title="Upload"
+        android:icon="@drawable/ic_upload"/>
 </menu>

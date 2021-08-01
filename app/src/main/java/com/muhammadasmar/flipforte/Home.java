@@ -126,8 +126,8 @@ public class Home extends AppCompatActivity {
                     fragment = new LibraryFragment();
                     newPosition = 3;
                     break;
-                case R.id.edit:
-                    fragment = new EditFragment();
+                case R.id.upload_menu:
+                    fragment = new UploadFragment();
                     newPosition = 4;
                     break;
             }

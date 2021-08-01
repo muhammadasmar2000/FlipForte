@@ -10,7 +10,7 @@
         android:id="@+id/signOutButton"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Sign Out"
         android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/fragment_container"

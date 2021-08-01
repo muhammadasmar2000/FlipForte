@@ -19,6 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,6 +45,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     //declare variables
     private static final String TAG = "MainActivity.java";
@@ -54,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mainLayout;
     int RC_SIGN_IN = 0;
     private Animation input_animation, button_animation;
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         requestPermission();
         initializeViews();
+        queue = Volley.newRequestQueue(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -139,15 +149,27 @@ public class MainActivity extends AppCompatActivity {
         }
         //valid username and password
         progressBar.setVisibility(View.VISIBLE);
+        //https://www.flipforte.net/api/register-user.php?identifier=
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    //create Snackbar for successful account registration
                     //Snackbar.make(mainLayout, "Account registration successful", Snackbar.LENGTH_SHORT).show();
+//                    String userID = FirebaseAuth.getInstance().getUid();
+//                    String url = "https://www.flipforte.net/api/register-user.php?identifier=" + userID;
+//                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            Log.d(TAG, "Debug: New userID: " + userID);
+//                        }
+//                    }, new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            Log.d(TAG, "Debug: Account registration failed");
+//                        }
+//                    });
                     Intent intent = new Intent(MainActivity.this, Home.class);
                     startActivity(intent);
-                    //finish();
                 } else {
                     Snackbar.make(mainLayout, "Account registration failed", Snackbar.LENGTH_SHORT).show();
                 }
@@ -167,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    //create Snackbar for successful account registration
                     //Snackbar.make(mainLayout, "Login successful", Snackbar.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, Home.class);
                     startActivity(intent);

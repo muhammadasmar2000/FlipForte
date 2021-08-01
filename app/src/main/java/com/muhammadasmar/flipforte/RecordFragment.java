@@ -44,7 +44,7 @@ public class RecordFragment extends Fragment {
                 recordButton.setEnabled(true);
                 stopButton.setEnabled(false);
                 ((Home)getActivity()).stopRecording();
-                recordingStatus.setText("Recording has stopped...");
+                recordingStatus.setText("Recording has saved to your downloads folder...");
             }
         });
 

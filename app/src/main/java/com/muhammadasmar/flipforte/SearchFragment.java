@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,12 +54,15 @@ public class SearchFragment extends Fragment {
         webview.setWebViewClient(new WebViewClient());
         webview.getSettings().setSupportZoom(true);
         webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setAppCacheEnabled(false);
+        webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         //HttpsTrustManager.allowAllSSL();
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         menuOptions = new ArrayList<>();
         arrayLists = new ArrayLists();
 
         userID = ((Home)getActivity()).userID;
+        //Toast.makeText(getContext(), "Debug: UserID: " + userID, Toast.LENGTH_SHORT).show();
         url = "https://www.flipforte.net/api/get-files.php?identifier=" + userID;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
